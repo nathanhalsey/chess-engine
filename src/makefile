@@ -1,6 +1,6 @@
 CC=gcc
 CFLAGS =-Wall -w
-OBJFILES = board.o attacks.o debug_board.o main.o
+OBJFILES = board.o attacks.o output_functions.o main.o
 TARGET = denise
 
 all: $(TARGET)
