@@ -6,4 +6,3 @@ void __init__board()
     U64 white_pieces = 0ULL, black_pieces = 0ULL;
     U64 bitboard[14];
 }
- 
