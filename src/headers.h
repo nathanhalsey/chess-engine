@@ -33,6 +33,10 @@ enum {
 //board.c
 void __init__board();
 
+
+
+///////////////////         ATTACKS              //////////////////////////////////
+
 //attacks.c
 U64 pawn_attacks(int,int);
 U64 knight_attacks(int,int);
@@ -40,6 +44,17 @@ U64 bishop_attacks(int,int);
 U64 rook_attacks(int,int);
 U64 queen_attacks(int,int);
 U64 king_attacks(int,int);
+void init_attack_vectors();
+
+struct attack_vectors{
+    U64 pawn_attack_vectors[64][2];
+    U64 knight_attack_vectors[64][2];
+    U64 bishop_attack_vectors[64][2];
+    U64 rook_attack_vectors[64][2];
+    U64 queen_attack_vectors[64][2];
+    U64 king_attack_vectors[64][2];    
+}attacks;
+
 
 //debug_board.c
 void print_board(U64);
