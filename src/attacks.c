@@ -77,22 +77,22 @@ U64 bishop_attacks(int square)
 
     for (int i = 1; i < 8; i++){
         if (can_go_left_down && !in_a((int)(square+(i-1)*7)) && !in_eight((int)(square + (i-1)*7))){
-            attacks |= board << i*7;
+            attacks |= (board << i*7);
         } else {
             can_go_left_down = 0;
         }
         if (can_go_left_up && !in_a((int)(square-(i-1)*9)) && !in_one((int)(square-(i-1)*9))){
-            attacks |= board >> i*9;
+            attacks |= (board >> i*9);
         } else {
             can_go_left_up = 0;
         }
         if (can_go_right_up && !in_h((int)(square -(i-1)*7)) && !in_one((int)(square - (i-1)*7))){
-            attacks |= board >> i*7;
+            attacks |= (board >> i*7);
         } else {
             can_go_right_up = 0;
         }
         if (can_go_right_down && !in_h((int)(square+(i-1)*9)) && !in_eight((int)(square+(i-1)*9))){
-            attacks |= board << i*9;
+            attacks |= (board << i*9);
         } else {
             can_go_right_down = 0;
         }
@@ -112,23 +112,27 @@ U64 rook_attacks(int square)
     put(board,square);
 
     for (int i = 1; i < 8; i++){
+        //up
         if (can_go_up && !in_one((int)(square-(i-1)*8))){
-            attacks |= board >> i*8;
+            attacks |= (board >> i*8);
         } else {
             can_go_up = 0;
         }
+        //right
         if (can_go_right && !in_h((int)(square + (i-1)))){
-            attacks |= board << i;
+            attacks |= (board << i);
         } else {
             can_go_right = 0;
         }
+        //left
         if (can_go_left && !in_a((int)(square - (i-1)))){
-            attacks |= board >> i;
+            attacks |= (board >> i);
         } else {
             can_go_left = 0;
         }
+        //down
         if (can_go_down && !in_eight((int)(square+(i-1)*8))){
-            attacks |= board << i*8;
+            attacks |= (board << i*8);
         } else {
             can_go_down = 0;
         }
@@ -146,6 +150,48 @@ U64 queen_attacks(int square)
 
     return attacks;
 }
+U64 king_attacks(int square)
+{
+    U64 board = 0ULL;
+    U64 attacks = 0ULL;
+
+    put(board,square);
+    //right (verified)
+    if (!in_h((int)square)){
+        attacks |= (board << 1);
+    }
+    //left (verified)
+    if (!in_a((int)square)){
+        attacks |= (board >> 1);
+    }
+    //up (verified)
+    if(!in_one((int)square)){
+        attacks |= (board >> 8);
+    }
+    //down (verified)
+    if (!in_eight((int)square)){
+       attacks |= (board << 8);
+    }
+    //down-left (verified)ss
+    // NOT WORKING
+    if (!in_a((int)square) && !in_eight((int)square)){
+        attacks |= (board << 7);
+    }
+    //down-right (verified)
+    if (!in_h((int)square) && !in_eight((int)square)){
+        attacks |= (board << 9);
+    }
+    //up-left (verified)
+    // not working
+    if (!in_a((int)square) && !in_one((int)square)){
+        attacks |= (board >> 9);
+    }
+    //up-right (verified)
+    if (!in_h((int)square) && !in_one((int)square)){
+        attacks |= (board >> 7);
+    }
+    return attacks;
+}
 void init_attack_vectors()
 {
     for (int i = 0; i < 64; i++){
@@ -155,13 +201,14 @@ void init_attack_vectors()
         bishop_attack_vectors[i] = bishop_attacks(i);
         rook_attack_vectors[i] = rook_attacks(i);
         queen_attack_vectors[i] = queen_attacks(i);
+        king_attack_vectors[i] = king_attacks(i);
     }
 }
 void print_attack_vectors()
 {
     for (int i = 0; i < 64; i++){
         printf("Board: %d\n",i);
-        print_board(queen_attack_vectors[i]);
+        print_board(king_attack_vectors[i]);
     }
-    //print_board(rook_attack_vectors[9]);
+    print_board(king_attacks(D8));
 }

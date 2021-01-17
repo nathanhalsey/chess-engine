@@ -25,6 +25,7 @@
 #define in_gh(square) (in_h(square) || in_g(square)) ? 1 : 0
 #define in_ab(square) (in_a(square) || in_b(square)) ? 1 : 0
 
+
 enum{
     A1, B1, C1, D1, E1, F1, G1, H1,
     A2, B2, C2, D2, E2, F2, G2, H2,
