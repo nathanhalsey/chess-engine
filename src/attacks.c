@@ -99,6 +99,7 @@ U64 bishop_attacks(int square)
     }
     return attacks;
 }
+//generate rook attacks (completed, working)
 U64 rook_attacks(int square)
 {
     int can_go_up = !in_one((int)square);
@@ -134,22 +135,33 @@ U64 rook_attacks(int square)
     }
     return attacks;
 }
+// generate queen attacks (working, completed)
+U64 queen_attacks(int square)
+{
+    U64 board = 0ULL;
+    U64 attacks = 0ULL;
+
+    attacks |= rook_attacks(square);
+    attacks |= bishop_attacks(square);
+
+    return attacks;
+}
 void init_attack_vectors()
 {
     for (int i = 0; i < 64; i++){
-        //init pawn attacks
         pawn_attack_vectors[i][white] = pawn_attacks(i,white);
         pawn_attack_vectors[i][black] = pawn_attacks(i,black);
         knight_attack_vectors[i] = knight_attacks(i);
         bishop_attack_vectors[i] = bishop_attacks(i);
         rook_attack_vectors[i] = rook_attacks(i);
+        queen_attack_vectors[i] = queen_attacks(i);
     }
 }
 void print_attack_vectors()
 {
-    //for (int i = 0; i < 64; i++){
-        //printf("Board: %d\n",i);
-      //  print_board(rook_attack_vectors[i]);
-    //}
+    for (int i = 0; i < 64; i++){
+        printf("Board: %d\n",i);
+        print_board(queen_attack_vectors[i]);
+    }
     //print_board(rook_attack_vectors[9]);
 }
