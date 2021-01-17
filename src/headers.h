@@ -56,9 +56,9 @@ void __init__board();
 U64 pawn_attacks(int,int);
 U64 knight_attacks(int);
 U64 bishop_attacks(int);
-U64 rook_attacks(int,int);
-U64 queen_attacks(int,int);
-U64 king_attacks(int,int);
+U64 rook_attacks(int);
+U64 queen_attacks(int);
+U64 king_attacks(int);
 void init_attack_vectors();
 void print_attack_vectors(void);  
 

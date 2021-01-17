@@ -1,10 +1,10 @@
 #include"headers.h"
 U64 pawn_attack_vectors[64][2];
 U64 knight_attack_vectors[64];
-U64 bishop_attack_vectors[64][2];
-U64 rook_attack_vectors[64][2];
-U64 queen_attack_vectors[64][2];
-U64 king_attack_vectors[64][2];
+U64 bishop_attack_vectors[64];
+U64 rook_attack_vectors[64];
+U64 queen_attack_vectors[64];
+U64 king_attack_vectors[64];
 // generate pawn attacks (completed, working)
 U64 pawn_attacks(int square, int colour)
 {
@@ -99,6 +99,41 @@ U64 bishop_attacks(int square)
     }
     return attacks;
 }
+U64 rook_attacks(int square)
+{
+    int can_go_up = !in_one((int)square);
+    int can_go_down = !in_eight((int)square);
+    int can_go_left = !in_a((int)square);
+    int can_go_right = !in_h((int)square);
+    
+    U64 board = 0ULL;
+    U64 attacks = 0ULL;
+    put(board,square);
+
+    for (int i = 1; i < 8; i++){
+        if (can_go_up && !in_one((int)(square-(i-1)*8))){
+            attacks |= board >> i*8;
+        } else {
+            can_go_up = 0;
+        }
+        if (can_go_right && !in_h((int)(square + (i-1)))){
+            attacks |= board << i;
+        } else {
+            can_go_right = 0;
+        }
+        if (can_go_left && !in_a((int)(square - (i-1)))){
+            attacks |= board >> i;
+        } else {
+            can_go_left = 0;
+        }
+        if (can_go_down && !in_eight((int)(square+(i-1)*8))){
+            attacks |= board << i*8;
+        } else {
+            can_go_down = 0;
+        }
+    }
+    return attacks;
+}
 void init_attack_vectors()
 {
     for (int i = 0; i < 64; i++){
@@ -106,12 +141,15 @@ void init_attack_vectors()
         pawn_attack_vectors[i][white] = pawn_attacks(i,white);
         pawn_attack_vectors[i][black] = pawn_attacks(i,black);
         knight_attack_vectors[i] = knight_attacks(i);
+        bishop_attack_vectors[i] = bishop_attacks(i);
+        rook_attack_vectors[i] = rook_attacks(i);
     }
 }
 void print_attack_vectors()
 {
     //for (int i = 0; i < 64; i++){
-        //print_board(knight_attack_vectors[i]);
+        //printf("Board: %d\n",i);
+      //  print_board(rook_attack_vectors[i]);
     //}
-    print_board(bishop_attacks(H6));
+    //print_board(rook_attack_vectors[9]);
 }
