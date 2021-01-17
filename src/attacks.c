@@ -36,35 +36,68 @@ U64 knight_attacks(int square)
     U64 board = 0ULL;
     U64 attacks = 0ULL;
     put(board,square);
-    if (!in_one_two(square) && !in_a(square)){
+    if (!in_one_two((int)square) && !in_a((int)square)){
         attacks |= (board >> 17);
     }
-    if (!in_one_two(square) && !in_h(square)){
+    if (!in_one_two((int)square) && !in_h((int)square)){
         attacks |= (board >> 15);
     }
-    if (!in_seven_eight(square) && !in_a(square)){
+    if (!in_seven_eight((int)square) && !in_a((int)square)){
         attacks |= (board << 15);
     }
-    if (!in_seven_eight(square) && !in_h(square)){
+    if (!in_seven_eight((int)square) && !in_h((int)square)){
         attacks |= (board << 17);
     }
-    if (!in_ab(square) && !in_eight(square)){
+    if (!in_ab((int)square) && !in_eight((int)square)){
        attacks |= (board << 6);
     }
-    if (!in_ab(square) && !in_one(square)){
+    if (!in_ab((int)square) && !in_one((int)square)){
         attacks |= (board >> 10);
     }
-    if (!in_gh(square) && !in_one(square)){
+    if (!in_gh((int)square) && !in_one((int)square)){
         attacks |= (board >> 6);
     }
-    if (!in_gh(square) && !in_eight(square)){
+    if (!in_gh(square) && !in_eight((int)square)){
         attacks |= (board << 10);
     }
     return attacks;
 }
+// generate bishop attacks (completed, working)
 U64 bishop_attacks(int square)
 {
 
+    int can_go_right_up = !in_h((int)square) && !in_one((int)square);
+    int can_go_right_down = !in_h((int)square) && !in_eight((int)square);
+    int can_go_left_up = !in_a((int)square) && !in_one((int)square);
+    int can_go_left_down = !in_a((int)square) && !in_eight((int)square);
+
+    U64 board = 0ULL;
+    U64 attacks = 0ULL;
+    put(board,square);
+
+    for (int i = 1; i < 8; i++){
+        if (can_go_left_down && !in_a((int)(square+(i-1)*7)) && !in_eight((int)(square + (i-1)*7))){
+            attacks |= board << i*7;
+        } else {
+            can_go_left_down = 0;
+        }
+        if (can_go_left_up && !in_a((int)(square-(i-1)*9)) && !in_one((int)(square-(i-1)*9))){
+            attacks |= board >> i*9;
+        } else {
+            can_go_left_up = 0;
+        }
+        if (can_go_right_up && !in_h((int)(square -(i-1)*7)) && !in_one((int)(square - (i-1)*7))){
+            attacks |= board >> i*7;
+        } else {
+            can_go_right_up = 0;
+        }
+        if (can_go_right_down && !in_h((int)(square+(i-1)*9)) && !in_eight((int)(square+(i-1)*9))){
+            attacks |= board << i*9;
+        } else {
+            can_go_right_down = 0;
+        }
+    }
+    return attacks;
 }
 void init_attack_vectors()
 {
@@ -77,8 +110,8 @@ void init_attack_vectors()
 }
 void print_attack_vectors()
 {
-    for (int i = 0; i < 64; i++){
-        print_board(knight_attack_vectors[i]);
-    }
-    //print_board(knight_attacks(D1));
+    //for (int i = 0; i < 64; i++){
+        //print_board(knight_attack_vectors[i]);
+    //}
+    print_board(bishop_attacks(H6));
 }

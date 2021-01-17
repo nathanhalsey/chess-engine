@@ -13,17 +13,17 @@
 
 
 // bitboard macros to return where we are on the board, used to deicde is a move is legal
-#define in_a(square) ((square%8 == 0) ? 1 : 0)
-#define in_b(square) (((square-1)%8 == 0) ? 1 : 0)
-#define in_h(square) (((square-7)%8  == 0) ? 1 : 0)
-#define in_g(square) (((square-6)%8 == 0) ? 1 : 0)
+#define in_a(square) (square%8 == 0) ? 1 : 0
+#define in_b(square) ((square-1)%8 == 0) ? 1 : 0
+#define in_h(square) ((square-7)%8  == 0) ? 1 : 0
+#define in_g(square) ((square-6)%8 == 0) ? 1 : 0
 
-#define in_one_two(square) ((square < 16) ? 1 : 0)
-#define in_seven_eight(square) ((square > 48) ? 1 : 0)
-#define in_eight(square) ((square > 56) ? 1 : 0)
-#define in_one(square) ((square < 8) ? 1 : 0)
-#define in_gh(square) ((in_h(square) || in_g(square)) ? 1 : 0)
-#define in_ab(square) ((in_a(square) || in_b(square)) ? 1 : 0)
+#define in_one_two(square) (square < 16) ? 1 : 0
+#define in_seven_eight(square) (square > 48) ? 1 : 0
+#define in_eight(square) (square > 56) ? 1 : 0
+#define in_one(square) (square < 8) ? 1 : 0
+#define in_gh(square) (in_h(square) || in_g(square)) ? 1 : 0
+#define in_ab(square) (in_a(square) || in_b(square)) ? 1 : 0
 
 enum{
     A1, B1, C1, D1, E1, F1, G1, H1,
