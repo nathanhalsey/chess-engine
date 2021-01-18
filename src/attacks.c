@@ -31,7 +31,7 @@ U64 pawn_attacks(int square, int colour)
     return attacks;
 }
 // generate knight attacks (completed, working)
-U64 knight_attacks(int square, U64 blockers)
+U64 knight_attacks(int square)
 {
     U64 board = 0ULL;
     U64 attacks = 0ULL;
@@ -149,7 +149,7 @@ U64 queen_attacks(int square, U64 blockers)
 
     return attacks;
 }
-U64 king_attacks(int square,U64 blockers)
+U64 king_attacks(int square)
 {
     U64 board = 0ULL;
     U64 attacks = 0ULL;
@@ -194,11 +194,11 @@ void init_attack_vectors()
     for (int i = 0; i < 64; i++){
         pawn_attack_vectors[i][white] = pawn_attacks(i,white);
         pawn_attack_vectors[i][black] = pawn_attacks(i,black);
-        knight_attack_vectors[i] = knight_attacks(i,0ULL);
+        knight_attack_vectors[i] = knight_attacks(i);
         bishop_attack_vectors[i] = bishop_attacks(i,0ULL);
         rook_attack_vectors[i] = rook_attacks(i,0ULL);
         queen_attack_vectors[i] = queen_attacks(i,0ULL);
-        king_attack_vectors[i] = king_attacks(i,0ULL);
+        king_attack_vectors[i] = king_attacks(i);
     }
 }
 void print_attack_vectors()
