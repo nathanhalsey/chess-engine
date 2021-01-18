@@ -1,10 +1,4 @@
 #include"headers.h"
-U64 pawn_attack_vectors[64][2];
-U64 knight_attack_vectors[64];
-U64 bishop_attack_vectors[64];
-U64 rook_attack_vectors[64];
-U64 queen_attack_vectors[64];
-U64 king_attack_vectors[64];
 // generate pawn attacks (completed, working)
 U64 pawn_attacks(int square, int colour)
 {
@@ -188,29 +182,4 @@ U64 king_attacks(int square)
         attacks |= (board >> 7);
     }
     return attacks;
-}
-void init_attack_vectors()
-{
-    for (int i = 0; i < 64; i++){
-        pawn_attack_vectors[i][white] = pawn_attacks(i,white);
-        pawn_attack_vectors[i][black] = pawn_attacks(i,black);
-        knight_attack_vectors[i] = knight_attacks(i);
-        bishop_attack_vectors[i] = bishop_attacks(i,0ULL);
-        rook_attack_vectors[i] = rook_attacks(i,0ULL);
-        queen_attack_vectors[i] = queen_attacks(i,0ULL);
-        king_attack_vectors[i] = king_attacks(i);
-    }
-}
-void print_attack_vectors()
-{
-    U64 blockers;
-    put(blockers,E5);
-    put(blockers,B2);
-    put(blockers,G7);
-    put(blockers,B6);
-    put(blockers,E4);
-    printf("Blocker on %d ?, %d\n",F2,get(blockers,F2));
-    print_board(blockers);
-    print_board(rook_attacks(B4,blockers));
-    print_board(bishop_attacks(D4,blockers));
 }

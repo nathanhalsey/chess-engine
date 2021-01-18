@@ -46,12 +46,8 @@ enum {
 };
 
 
-
-
 //board.c
 void __init__board();
-
-
 
 ///////////////////         ATTACKS              //////////////////////////////////
 
@@ -62,14 +58,26 @@ U64 bishop_attacks(int,U64);
 U64 rook_attacks(int,U64);
 U64 queen_attacks(int,U64);
 U64 king_attacks(int);
-void init_attack_vectors();
-void print_attack_vectors(void);  
+void init_leapers(void);
+
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //output_functions.c
 void print_board(U64);
+void print_attacks(void);  
+
+
+//utils.c
+int popCount(U64);
 
 
 //main.c
 int main();
+
+
 
 #endif //HEADERDEF

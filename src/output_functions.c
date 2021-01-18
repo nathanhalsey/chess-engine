@@ -1,4 +1,11 @@
 #include"headers.h"
+void print_attacks()
+{
+    U64 board = king_attacks(A6);
+    print_board(board);
+    int count = popCount(board);
+    printf("Popcount is: %d\n",count);
+}
 void print_board(U64 board)
 {
     printf("  A B C D E F G H\n");
