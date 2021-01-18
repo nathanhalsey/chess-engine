@@ -112,25 +112,25 @@ U64 rook_attacks(int square, U64 blockers)
 
     for (int i = 1; i < 8; i++){
         //up
-        if (can_go_up && !in_one((int)(square-(i-1)*8))){
+        if ((!get(blockers,(int)(square-(i-1)*8)) && can_go_up) && !in_one((int)(square-(i-1)*8))){
             attacks |= (board >> i*8);
         } else {
             can_go_up = 0;
         }
         //right
-        if (can_go_right && !in_h((int)(square + (i-1)))){
+        if ((!get(blockers,(int)(square+(i-1))) && can_go_right) && !in_h((int)(square+(i-1)))){
             attacks |= (board << i);
         } else {
             can_go_right = 0;
         }
         //left
-        if (can_go_left && !in_a((int)(square - (i-1)))){
+        if ((!get(blockers,(int)(square-(i-1))) && can_go_left) && !in_a((int)(square - (i-1)))){
             attacks |= (board >> i);
         } else {
             can_go_left = 0;
         }
         //down
-        if (can_go_down && !in_eight((int)(square+(i-1)*8))){
+        if ((!get(blockers,(int)(square+(i-1)*8)) && can_go_down) && !in_eight((int)(square+(i-1)*8))){
             attacks |= (board << i*8);
         } else {
             can_go_down = 0;
@@ -208,11 +208,9 @@ void print_attack_vectors()
     put(blockers,B2);
     put(blockers,G7);
     put(blockers,B6);
+    put(blockers,E4);
     printf("Blocker on %d ?, %d\n",F2,get(blockers,F2));
     print_board(blockers);
-    for (int i = 0; i < 64; i++){
-        printf("Board: %d\n",i);
-        print_board(king_attack_vectors[i]);
-    }
+    print_board(rook_attacks(B4,blockers));
     print_board(bishop_attacks(D4,blockers));
 }
