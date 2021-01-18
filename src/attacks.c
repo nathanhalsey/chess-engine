@@ -31,7 +31,7 @@ U64 pawn_attacks(int square, int colour)
     return attacks;
 }
 // generate knight attacks (completed, working)
-U64 knight_attacks(int square)
+U64 knight_attacks(int square, U64 blockers)
 {
     U64 board = 0ULL;
     U64 attacks = 0ULL;
@@ -63,7 +63,7 @@ U64 knight_attacks(int square)
     return attacks;
 }
 // generate bishop attacks (completed, working)
-U64 bishop_attacks(int square)
+U64 bishop_attacks(int square, U64 blockers)
 {
 
     int can_go_right_up = !in_h((int)square) && !in_one((int)square);
@@ -74,24 +74,23 @@ U64 bishop_attacks(int square)
     U64 board = 0ULL;
     U64 attacks = 0ULL;
     put(board,square);
-
     for (int i = 1; i < 8; i++){
-        if (can_go_left_down && !in_a((int)(square+(i-1)*7)) && !in_eight((int)(square + (i-1)*7))){
+        if ((!get(blockers,(int)(square + (i-1)*7)) && can_go_left_down) && (!in_a((int)(square+(i-1)*7)) && !in_eight((int)(square + (i-1)*7)))){
             attacks |= (board << i*7);
         } else {
             can_go_left_down = 0;
         }
-        if (can_go_left_up && !in_a((int)(square-(i-1)*9)) && !in_one((int)(square-(i-1)*9))){
+        if ((!get(blockers,(int)(square-(i-1)*9)) && can_go_left_up) && (!in_a((int)(square-(i-1)*9)) && !in_one((int)(square-(i-1)*9)))){
             attacks |= (board >> i*9);
         } else {
             can_go_left_up = 0;
         }
-        if (can_go_right_up && !in_h((int)(square -(i-1)*7)) && !in_one((int)(square - (i-1)*7))){
+        if ((!get(blockers,(int)(square - (i-1)*7)) && can_go_right_up) && (!in_h((int)(square -(i-1)*7)) && !in_one((int)(square - (i-1)*7)))){
             attacks |= (board >> i*7);
         } else {
             can_go_right_up = 0;
         }
-        if (can_go_right_down && !in_h((int)(square+(i-1)*9)) && !in_eight((int)(square+(i-1)*9))){
+        if ((!get(blockers,(int)(square+(i-1)*9)) && can_go_right_down) && (!in_h((int)(square+(i-1)*9)) && !in_eight((int)(square+(i-1)*9)))){
             attacks |= (board << i*9);
         } else {
             can_go_right_down = 0;
@@ -100,7 +99,7 @@ U64 bishop_attacks(int square)
     return attacks;
 }
 //generate rook attacks (completed, working)
-U64 rook_attacks(int square)
+U64 rook_attacks(int square, U64 blockers)
 {
     int can_go_up = !in_one((int)square);
     int can_go_down = !in_eight((int)square);
@@ -140,17 +139,17 @@ U64 rook_attacks(int square)
     return attacks;
 }
 // generate queen attacks (working, completed)
-U64 queen_attacks(int square)
+U64 queen_attacks(int square, U64 blockers)
 {
     U64 board = 0ULL;
     U64 attacks = 0ULL;
 
-    attacks |= rook_attacks(square);
-    attacks |= bishop_attacks(square);
+    attacks |= rook_attacks(square,blockers);
+    attacks |= bishop_attacks(square,blockers);
 
     return attacks;
 }
-U64 king_attacks(int square)
+U64 king_attacks(int square,U64 blockers)
 {
     U64 board = 0ULL;
     U64 attacks = 0ULL;
@@ -172,8 +171,7 @@ U64 king_attacks(int square)
     if (!in_eight((int)square)){
        attacks |= (board << 8);
     }
-    //down-left (verified)ss
-    // NOT WORKING
+    //down-left (verified)
     if (!in_a((int)square) && !in_eight((int)square)){
         attacks |= (board << 7);
     }
@@ -182,7 +180,6 @@ U64 king_attacks(int square)
         attacks |= (board << 9);
     }
     //up-left (verified)
-    // not working
     if (!in_a((int)square) && !in_one((int)square)){
         attacks |= (board >> 9);
     }
@@ -197,18 +194,25 @@ void init_attack_vectors()
     for (int i = 0; i < 64; i++){
         pawn_attack_vectors[i][white] = pawn_attacks(i,white);
         pawn_attack_vectors[i][black] = pawn_attacks(i,black);
-        knight_attack_vectors[i] = knight_attacks(i);
-        bishop_attack_vectors[i] = bishop_attacks(i);
-        rook_attack_vectors[i] = rook_attacks(i);
-        queen_attack_vectors[i] = queen_attacks(i);
-        king_attack_vectors[i] = king_attacks(i);
+        knight_attack_vectors[i] = knight_attacks(i,0ULL);
+        bishop_attack_vectors[i] = bishop_attacks(i,0ULL);
+        rook_attack_vectors[i] = rook_attacks(i,0ULL);
+        queen_attack_vectors[i] = queen_attacks(i,0ULL);
+        king_attack_vectors[i] = king_attacks(i,0ULL);
     }
 }
 void print_attack_vectors()
 {
+    U64 blockers;
+    put(blockers,E5);
+    put(blockers,B2);
+    put(blockers,G7);
+    put(blockers,B6);
+    printf("Blocker on %d ?, %d\n",F2,get(blockers,F2));
+    print_board(blockers);
     for (int i = 0; i < 64; i++){
         printf("Board: %d\n",i);
         print_board(king_attack_vectors[i]);
     }
-    print_board(king_attacks(D8));
+    print_board(bishop_attacks(D4,blockers));
 }

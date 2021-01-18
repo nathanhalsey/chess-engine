@@ -12,18 +12,20 @@
 #define remove(board,square) (get(board,square) ? (board ^= (1ULL << square)) : 0)
 
 
-// bitboard macros to return where we are on the board, used to deicde is a move is legal
-#define in_a(square) (square%8 == 0) ? 1 : 0
-#define in_b(square) ((square-1)%8 == 0) ? 1 : 0
-#define in_h(square) ((square-7)%8  == 0) ? 1 : 0
-#define in_g(square) ((square-6)%8 == 0) ? 1 : 0
 
-#define in_one_two(square) (square < 16) ? 1 : 0
-#define in_seven_eight(square) (square > 48) ? 1 : 0
-#define in_eight(square) (square > 56) ? 1 : 0
-#define in_one(square) (square < 8) ? 1 : 0
-#define in_gh(square) (in_h(square) || in_g(square)) ? 1 : 0
-#define in_ab(square) (in_a(square) || in_b(square)) ? 1 : 0
+
+// bitboard macros to return where we are on the board, used to deicde is a move is legal
+#define in_a(square) (square%8 == 0)
+#define in_b(square) ((square-1)%8 == 0)
+#define in_h(square) ((square-7)%8  == 0)
+#define in_g(square) ((square-6)%8 == 0)
+
+#define in_one_two(square) (square < 16)
+#define in_seven_eight(square) (square > 48)
+#define in_eight(square) (square > 56)
+#define in_one(square) (square < 8)
+#define in_gh(square) (in_h(square) || in_g(square))
+#define in_ab(square) (in_a(square) || in_b(square))
 
 
 enum{
@@ -55,11 +57,11 @@ void __init__board();
 
 //attacks.c
 U64 pawn_attacks(int,int);
-U64 knight_attacks(int);
-U64 bishop_attacks(int);
-U64 rook_attacks(int);
-U64 queen_attacks(int);
-U64 king_attacks(int);
+U64 knight_attacks(int,U64);
+U64 bishop_attacks(int,U64);
+U64 rook_attacks(int,U64);
+U64 queen_attacks(int,U64);
+U64 king_attacks(int,U64);
 void init_attack_vectors();
 void print_attack_vectors(void);  
 
