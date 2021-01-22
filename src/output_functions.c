@@ -5,7 +5,8 @@ void print_attacks()
     print_board(board);
     int count = pop_count(board);
     printf("Popcount is: %d\n",count);
-    printf("LSB index is: %d\n",lsb_index(board));
+    char* my_coord = int_to_coord(lsb_index(board));
+    printf("LSB square is: %s\n",my_coord);
     //print_board(board);
 }
 void print_board(U64 board)
