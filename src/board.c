@@ -1,5 +1,9 @@
 #include"headers.h" 
-void __init__board()
+void _init_board()
 {
 
+}
+void _init_attack_vectors()
+{
+    
 }
