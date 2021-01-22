@@ -26,6 +26,7 @@ void print_attacks(void);
 //utils.c
 int pop_count(U64);
 int lsb_index(U64);
+const char* int_to_coord(int);
 
 //main.c
 int main();
