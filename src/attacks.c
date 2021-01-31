@@ -135,7 +135,7 @@ U64 rook_attacks(int square, U64 blockers)
 // generate queen attacks (working, completed)
 U64 queen_attacks(int square, U64 blockers)
 {
-    U64 board = 0ULL;
+
     U64 attacks = 0ULL;
 
     attacks |= rook_attacks(square,blockers);
